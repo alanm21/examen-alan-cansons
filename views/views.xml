@@ -1,0 +1,115 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!-- Vista tree de cansons -->
+    <record model="ir.ui.view" id="examen.list_cansons">
+      <field name="name">examen list cansons</field>
+      <field name="model">examen.canso</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="clients"/>
+          <field name="popularitat"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- Vista form de cansons -->
+    <record model="ir.ui.view" id="examen.cansons_form">
+      <field name="name">examen cansons form</field>
+      <field name="model">examen.canso</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <separator string="Informacio de la canso"></separator>
+            <group>
+              <group>
+                <field name="name"/>
+                <field name="clients"/>
+                <field name="popularitat"/>
+              </group>
+              <group>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- Wizards -->
+    <!-- Record wizard carrera -->
+    <record id="examen.action_nueva_canso_wizard" model="ir.actions.act_window">
+      <field name="name">Lanzar nuevo wizard</field>
+      <field name="res_model">examen.canso_wizard</field>
+      <field name="view_mode">form</field>
+      <field name="target">new</field>
+    </record>
+
+    <!-- Action wizard carrera -->
+    <act_window id="examen.action_nueva_canso_wizard" 
+      name="Lanzar wizard"
+      res_model="examen.canso_wizard"
+      view_mode="form"
+      target="new"/>
+
+    <record model="ir.ui.view" id="examen.client_partner_form">
+      <field name="name">examen client form inherited</field>
+      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="model">res.partner</field>
+      <field name="arch" type="xml">
+        <field name="vat" position="after">
+          <field name="favorit_canso"/>
+          <button name="%(action_nueva_canso_wizard)d" type="action" string="Lanzar wizard" />
+        </field>
+      </field> 
+    </record>
+
+    <!-- Vista wizard del model carrera - WIZARDS -->
+    <record model="ir.ui.view" id="examen.canso_wizard_form">
+      <field name="name">examen </field>
+      <field name="model">examen.canso_wizard</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <separator string="Hola selecciona cancion y anyade puntuacion"></separator>
+            <field name="cansons_new" />
+            <field name="puntuacion"/>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+
+
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="examen.action_window_cansons">
+      <field name="name">Llista cansons</field>
+      <field name="res_model">examen.canso</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="examen.action_server">
+      <field name="name">examen server</field>
+      <field name="model_id" ref="model_examen_examen"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+    <menuitem name="examen" id="examen.menu_root"/>
+    <!-- menu categories -->
+    <menuitem name="Empresa" id="examen.menu_1" parent="examen.menu_root"/>
+    <!-- actions -->
+    <menuitem name="List cansons" id="examen.menu_cansons_list" parent="examen.menu_1" action="examen.action_window_cansons"/>
+  </data>
+</odoo>
